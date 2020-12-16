@@ -14,5 +14,14 @@ export default {
     //rootGetters의 userId 값 가져오기
     return coaches.some(coach => coach.id === userId);
     //coach목록에서 id를 rootGetters에서 가져온 userId로 변경하기
+  },
+  shouldUpdate(state) {
+    const lastFetch = state.lastFetch;
+    if (!lastFetch) {
+      return true;
+    }
+
+    const currentTimestamp = new Date().getTime();
+    return (currentTimestamp - lastFetch) / 1000 > 60;
   }
 };

@@ -1,8 +1,6 @@
 export default {
   requests(state, _, _2, rootGetters) {
     const coachId = rootGetters.userId;
-    console.log('test');
-    console.log(state.requests);
     return state.requests.filter(req => req.coachId === coachId);
     //리퀘스트 목록 코치 id로 필터링 해서 가져오기
 

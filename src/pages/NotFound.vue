@@ -1,6 +1,11 @@
 <template>
   <section>
-    <p>404</p>
+    <base-card>
+      <h1>Page not Found</h1>
+      <p>
+        please check the page
+      </p>
+    </base-card>
   </section>
 </template>
 

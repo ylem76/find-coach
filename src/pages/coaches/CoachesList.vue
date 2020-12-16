@@ -1,33 +1,43 @@
 <template>
-  <section>
-    <coach-filter @change-filter="setFilters"></coach-filter>
-  </section>
-  <section>
-    <base-card>
-      <div class="controls">
-        <base-button mode="outline">refresh</base-button>
-        <base-button v-if="!isCoach" link to="/register"
-          >Register as Coach</base-button
-        >
-        <!-- 컴포넌트에 props으로 내려가는 link = true -->
-      </div>
-      <ul v-if="hasCoaches">
-        <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
+  <div>
+    <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section>
+      <coach-filter @change-filter="setFilters"></coach-filter>
+    </section>
+    <section>
+      <base-card>
+        <div class="controls">
+          <base-button mode="outline" @click="loadCoaches(true)">
+            refresh
+          </base-button>
+          <base-button v-if="!isCoach && !isLoading" link to="/register">
+            Register as Coach
+          </base-button>
+          <!-- 컴포넌트에 props으로 내려가는 link = true -->
+        </div>
+        <div v-if="isLoading">
+          <base-spinner></base-spinner>
+        </div>
+        <ul v-else-if="hasCoaches">
+          <!-- <li v-for="coach in filteredCoaches" :key="coach.id">
           {{ coach.firstName }}
         </li> -->
-        <coach-item
-          v-for="coach in filteredCoaches"
-          :key="coach.id"
-          :id="coach.id"
-          :first-name="coach.firstName"
-          :last-name="coach.lastName"
-          :rate="coach.hourlyRate"
-          :areas="coach.areas"
-        ></coach-item>
-      </ul>
-      <h3 v-else>No coaches found.</h3>
-    </base-card>
-  </section>
+          <coach-item
+            v-for="coach in filteredCoaches"
+            :key="coach.id"
+            :id="coach.id"
+            :first-name="coach.firstName"
+            :last-name="coach.lastName"
+            :rate="coach.hourlyRate"
+            :areas="coach.areas"
+          ></coach-item>
+        </ul>
+        <h3 v-else>No coaches found.</h3>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -41,6 +51,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      error: null,
       activeFilters: {
         frontend: true,
         backend: true,
@@ -73,12 +85,32 @@ export default {
       });
     },
     hasCoaches() {
-      return this.$store.getters['coaches/hasCoaches'];
+      return !this.isLoading && this.$store.getters['coaches/hasCoaches'];
     }
+  },
+  created() {
+    this.loadCoaches();
   },
   methods: {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
+    },
+    async loadCoaches(refresh = false) {
+      this.isLoading = true;
+
+      try {
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forceRefresh: refresh
+        });
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      console.log(this.isLoading);
+
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
     }
   }
 };

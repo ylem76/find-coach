@@ -1,22 +1,24 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="form-control">
-      <label for="email">Your E-mail</label>
-      <input type="email" id="email" v-model.trim="email" />
-    </div>
-    <div class="form-control">
-      <label for="message">Message</label>
-      <textarea id="message" rows="5" v-model.trim="message"></textarea>
-    </div>
-    <p class="errors" v-if="!formIsValid">
-      Please enter a valid email and non-empty message
-    </p>
-    <div class="actions">
-      <base-button>
-        Send Message
-      </base-button>
-    </div>
-  </form>
+  <div>
+    <form @submit.prevent="submitForm">
+      <div class="form-control">
+        <label for="email">Your E-mail</label>
+        <input type="email" id="email" v-model.trim="email" />
+      </div>
+      <div class="form-control">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" v-model.trim="message"></textarea>
+      </div>
+      <p class="errors" v-if="!formIsValid">
+        Please enter a valid email and non-empty message
+      </p>
+      <div class="actions">
+        <base-button>
+          Send Message
+        </base-button>
+      </div>
+    </form>
+  </div>
 </template>
 <script>
 export default {
@@ -35,9 +37,8 @@ export default {
         !this.email.includes('@') ||
         this.message === ''
       ) {
-        
         this.formIsValid = false;
-        console.log("form is valid: " + this.formIsValid);
+        console.log('form is valid: ' + this.formIsValid);
         return;
 
         //만약 email 이 공란이거나, email에 @가 없거나, message가 공란일 경우 formIsValid는 false
