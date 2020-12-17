@@ -20,8 +20,10 @@ export default {
     // 아이디 하나 당
     //put : 만약 데이터가 있다면 덮어씌운다. 없으면 새항목이 추가됨
     //post는 무조건 새로운 것이 추가됨
+    const token = context.rootGetters.token;
     const response = await fetch(
-      `https://find-coach-b9529-default-rtdb.firebaseio.com/coaches/${userId}.json`,
+      `https://find-coach-b9529-default-rtdb.firebaseio.com/coaches/${userId}.json?auth=` +
+        token,
       {
         method: 'PUT',
         body: JSON.stringify(coachData)

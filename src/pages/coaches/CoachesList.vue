@@ -90,12 +90,17 @@ export default {
   },
   created() {
     this.loadCoaches();
+    this.testCoaches();
   },
   methods: {
+    testCoaches() {
+      console.log('test');
+    },
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
     async loadCoaches(refresh = false) {
+      console.log('로드 코치');
       this.isLoading = true;
 
       try {

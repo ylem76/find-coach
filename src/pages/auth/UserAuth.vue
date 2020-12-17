@@ -66,16 +66,17 @@ export default {
       this.isLoading = true;
 
       //send http requests
+      const actionPayload = {
+        email: this.email,
+        password: this.password
+      };
 
       try {
         if (this.mode === 'login') {
-          console.log('login');
+          await this.$store.dispatch('login', actionPayload);
         } else {
           console.log(this.password);
-          await this.$store.dispatch('signup', {
-            email: this.email,
-            password: this.password
-          });
+          await this.$store.dispatch('signup', actionPayload);
         }
       } catch (err) {
         this.error = err.message || 'fail to auth try later';
