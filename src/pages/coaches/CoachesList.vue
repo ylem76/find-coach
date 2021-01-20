@@ -12,7 +12,14 @@
           <base-button mode="outline" @click="loadCoaches(true)">
             refresh
           </base-button>
-          <base-button v-if="!isCoach && !isLoading" link to="/register">
+          <base-button link to="/auth?redirect=register" v-if="!isLoggedIn"
+            >Login to registration</base-button
+          >
+          <base-button
+            v-if="isLoggedIn && !isCoach && !isLoading"
+            link
+            to="/register"
+          >
             Register as Coach
           </base-button>
           <!-- 컴포넌트에 props으로 내려가는 link = true -->
@@ -61,6 +68,9 @@ export default {
     };
   },
   computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
     isCoach() {
       return this.$store.getters['coaches/isCoach'];
     },

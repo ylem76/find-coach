@@ -80,6 +80,8 @@ export default {
           console.log(this.password);
           await this.$store.dispatch('signup', actionPayload);
         }
+        const redirectUrl = '/' + (this.$route.query.redirect || 'coaches');
+        this.$router.replace(redirectUrl);
       } catch (err) {
         this.error = err.message || 'fail to auth try later';
       }
